@@ -1,0 +1,76 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Simplechat Test Project{% endblock %}
+
+{% block body %}
+
+    <h1 class="text-center">Simple Chat Test Project</h1>
+
+    <div class="container">
+        <div class="row justify-content-start">
+            <div class="col">
+                {{ form_start(form, {'attr': {'novalidate': true}}) }}
+                {{ form_widget(form) }}
+            </div>
+            <div class="col">
+                <div>
+                    <button type="submit" class="btn btn-primary">Отправить</button>
+                </div>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+
+
+
+    <table class="table table-striped">
+        <tr>
+            <th>Дата публикации</th>
+            <th>Сообщение</th>
+        </tr>
+
+        {#{% for item in order.orderItems %}#}
+            {#<tr>#}
+                {#<td>{{ item.product.name }}</td>#}
+                {#<td>#}
+                    {#<input type="number" min="1" class="js-cart-count"#}
+                           {#data-href="{{ path('order_update_count', {'id': item.id}) }}"#}
+                           {#value="{{ item.count }}">#}
+                {#</td>#}
+                {#<td>{{ item.price|money }}</td>#}
+                {#<td>{{ item.amount|money }}</td>#}
+                {#<td>#}
+                    {#<a href="{{ path('order_delete_item', {'id': item.id}) }}" class="js-cart-delete">#}
+                        {#<span class="fas fa-minus-circle"></span>#}
+                    {#</a>#}
+                {#</td>#}
+            {#</tr>#}
+        {#{% endfor %}#}
+
+        {#<tr>#}
+            {#<td colspan="3">Всего</td>#}
+            {#<td id="orderAmount">{{ order.amount|money }}</td>#}
+            {#<td></td>#}
+        {#</tr>#}
+    {#</table>#}
+    {##}
+    {#<h1>{{ post.postedAt }}</h1>#}
+    {#<h1>Обратная связь</h1>#}
+
+
+            {#{% if product.image and vich_uploader_asset(product, 'image') %}#}
+                {#<img src="{{ vich_uploader_asset(product, 'image') }}" class="card-img-top" alt="...">#}
+            {#{% else %}#}
+                {#<img src="//placehold.it/200x150" class="card-img-top" alt="...">#}
+            {#{% endif %}#}
+
+            {#<div class="card-body">#}
+                {#<p class="card-text">{{ (product.price|money) }}</p>#}
+                {#<p class="card-text">{{ product.description }}</p>#}
+                {#<a href="{{ path('order_add_to_cart', {'id': product.id}) }}"#}
+                   {#class="btn btn-primary js-add-to-cart">В корзину</a>#}
+            {#</div>#}
+        {#</div>#}
+    {#</div>#}
+
+{% endblock %}
