@@ -3,9 +3,7 @@
 
 {% block title %}Simple Chat Test Project{% endblock %}
 
-{% block javascripts %}
-    <script src="https://ajax.googleapis.com/ajax/libs/d3js/5.9.0/d3.min.js"></script>
-{% endblock %}
+{% block javascripts %}{% endblock %}
 
 {% block body %}
 
@@ -16,13 +14,16 @@
             {{ form_start(form, {'attr': {'novalidate': true, 'id': 'chat_form'} }) }}
             {{ form_widget(form) }}
         </div>
+        {# Тут с mt-3 подгон под результат, но лучше пока реализовать не удалось #}
         <div class="align-self-center mt-3">
             <button type="submit" class="btn btn-success" id="submit_button">Отправить</button>
         </div>
             {{ form_end(form) }}
-        {# Тут с mt-3 подгон под результат, но лучше пока реализовать не удалось #}
     </div>
 
-    {{ include('post/postTable.html.twig', {'posts': posts}) }}
+    <span class="post-table">
+        {{ render(controller('\\App\\Controller\\PostController::postTable')) }}
+    </span>
+        {#        {{ include('post/postTable.html.twig', {'posts': posts}) }}#}
 
 {% endblock %}

@@ -26,26 +26,25 @@ class PostController extends AbstractController
             $entityManager->persist($post);
             $entityManager->flush();
 
+//            if ($request->isXmlHttpRequest()){
+//                return $this
+//            }
+
             return $this->redirectToRoute('post');
         }
-        //var_dump($postRepository->count([])); die();
+
         //Крайне неоптимальный способ удаления лишних записей
         //т.к. Обращение к базе происходит n-10 раз
+        if($postRepository->count([]) > $postLimit){
+            $this->removeOldestRow($entityManager, $postRepository, $postLimit);
+        }
 
-        $this->checkPosts($entityManager, $postRepository, $postLimit);
-        $posts = $postRepository->findBy([], ['postedAt' => 'DESC']);
+        $posts = $this->getPosts($postRepository);
 
         return $this->render('post/index.html.twig', [
             'form' => $form->createView(),
             'posts'=>$posts,
         ]);
-    }
-
-    public function checkPosts($entityManager, $postRepository, $postLimit): void
-    {
-        if($postRepository->count([]) > $postLimit){
-            $this->removeOldestRow($entityManager, $postRepository, $postLimit);
-        }
     }
 
     public function removeOldestRow($entityManager, $postRepository, $postLimit): void
@@ -54,6 +53,18 @@ class PostController extends AbstractController
             $entityManager->remove($postRepository->findOneBy([],['postedAt' => 'ASC']));
             $entityManager->flush();
         }
+    }
+
+    public function postTable(PostRepository $postRepository)
+    {
+        return $this->render('post/postTable.html.twig', [
+            'posts' => $this->getPosts($postRepository),
+        ]);
+    }
+
+    public function getPosts($postRepository)
+    {
+        return $postRepository->findBy([], ['postedAt' => 'DESC']);
     }
 }
 
