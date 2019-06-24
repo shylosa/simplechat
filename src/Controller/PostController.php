@@ -16,7 +16,7 @@ class PostController extends AbstractController
      * @Route("/", name="post")
      */
     public function index(Request $request, EntityManagerInterface $entityManager, PostRepository $postRepository)
-    {
+    {   $postLimit = 10;
         $post = new Post();
         $form = $this->createForm(PostType::class, $post);
         $form->handleRequest($request);
@@ -24,15 +24,15 @@ class PostController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $post->setPostedAt(new \DateTime());
             $entityManager->persist($post);
-
-            //Крайне неоптимальный способ удаления лишних записей
-            //т.к. Обращение к базе происходит n-10 раз
-            $this->removeOldestRow($entityManager, $postRepository);
             $entityManager->flush();
 
             return $this->redirectToRoute('post');
         }
+        //var_dump($postRepository->count([])); die();
+        //Крайне неоптимальный способ удаления лишних записей
+        //т.к. Обращение к базе происходит n-10 раз
 
+        $this->checkPosts($entityManager, $postRepository, $postLimit);
         $posts = $postRepository->findBy([], ['postedAt' => 'DESC']);
 
         return $this->render('post/index.html.twig', [
@@ -41,10 +41,16 @@ class PostController extends AbstractController
         ]);
     }
 
-    public function removeOldestRow($entityManager, $postRepository): void
+    public function checkPosts($entityManager, $postRepository, $postLimit): void
     {
-        $maxPosts = 10;
-        while ($postRepository->count([]) >= $maxPosts){
+        if($postRepository->count([]) > $postLimit){
+            $this->removeOldestRow($entityManager, $postRepository, $postLimit);
+        }
+    }
+
+    public function removeOldestRow($entityManager, $postRepository, $postLimit): void
+    {
+        while ($postRepository->count([]) > $postLimit){
             $entityManager->remove($postRepository->findOneBy([],['postedAt' => 'ASC']));
             $entityManager->flush();
         }

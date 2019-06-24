@@ -1,64 +1,28 @@
+
 {% extends 'base.html.twig' %}
 
-
 {% block title %}Simple Chat Test Project{% endblock %}
+
+{% block javascripts %}
+    <script src="https://ajax.googleapis.com/ajax/libs/d3js/5.9.0/d3.min.js"></script>
+{% endblock %}
 
 {% block body %}
 
     <h1 class="text-center mt-5 mb-5">Simple Chat Test Project</h1>
 
     <div class="row justify-content-center">
-
         <div class="col-md-4 mt-2">
-            {{ form_start(form, {'attr': {'novalidate': true} }) }}
+            {{ form_start(form, {'attr': {'novalidate': true, 'id': 'chat_form'} }) }}
             {{ form_widget(form) }}
         </div>
         <div class="align-self-center mt-3">
-            <button type="submit" class="btn btn-success">Отправить</button>
+            <button type="submit" class="btn btn-success" id="submit_button">Отправить</button>
         </div>
             {{ form_end(form) }}
-
         {# Тут с mt-3 подгон под результат, но лучше пока реализовать не удалось #}
-
     </div>
 
-    <div class="container w-75 border rounded-sm mt-3">
-        <table class="table">
-            <thead class="table-borderless">
-            <tr>
-                <th scope="col">Дата публикации</th>
-                <th scope="col">Сообщение</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for post in posts %}
-                <tr>
-                    <td>{{ post.postedAt | date('Y-m-d, H:i:s') }}</td>
-                    <td>{{ post.message }}</td>
-                </tr>
-            {% endfor %}
-        </table>
-    </div>
-
-    <script>
-      $(function () {
-
-        $('form').on('submit', function (e) {
-
-          e.preventDefault();
-
-          $.ajax({
-            type: 'post',
-            url: 'post.php',
-            data: $('form').serialize(),
-            success: function () {
-              alert('form was submitted');
-            }
-          });
-
-        });
-
-      });
-    </script>
+    {{ include('post/postTable.html.twig', {'posts': posts}) }}
 
 {% endblock %}

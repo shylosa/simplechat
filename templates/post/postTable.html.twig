@@ -1,0 +1,18 @@
+<div class="container w-75 border rounded-sm mt-3">
+    <table class="table">
+        <thead class="table-borderless text-center">
+            <tr>
+                <th class="w-25">Дата публикации</th>
+                <th>Сообщение</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for post in posts %}
+                <tr>
+                    <td>{{ post.postedAt | date('Y-m-d, H:i:s') }}</td>
+                    <td>{{ post.message }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
