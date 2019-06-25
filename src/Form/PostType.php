@@ -18,7 +18,7 @@ class PostType extends AbstractType
                 ->add('message', null, [
                     'label'=>' ',
                     'attr' => [
-                        'placeholder' => 'Введите сообщение',
+                        'placeholder' => 'Введите сообщение'
                 ]])
         ;
     }

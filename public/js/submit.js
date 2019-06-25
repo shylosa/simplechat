@@ -10,10 +10,15 @@ $('.js-btn-submit').on('click', function (event) {
     url: chatForm.attr('action'),
     data: chatForm.serialize(),
   }).done(function(data) {
-      postTable.html(data);
-      chatForm[0].reset();
+    postTable.html(data);
+    chatForm[0].reset();
   });
+
 });
+
+
+
+
 
 
 
