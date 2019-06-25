@@ -4,9 +4,17 @@ $('.js-btn-submit').on('click', function (event) {
   let chatForm = $('#chat-form');
 
   event.preventDefault();
-  chatForm.submit();
 
-  $.get(this.href, function (data) {
-    postTable.html(data);
+  $.ajax({
+    type: chatForm.attr('method'),
+    url: chatForm.attr('action'),
+    data: chatForm.serialize(),
+  }).done(function(data) {
+      postTable.html(data);
+      chatForm[0].reset();
   });
 });
+
+
+
+

@@ -40,11 +40,10 @@ class PostController extends AbstractController
         ]);
     }
 
-    public function postTable(PostsService $postsService, PostType $form)
+    public function postTable(PostsService $postsService)
     {
         $postsService->checkPostCount();
         return $this->render('post/postTable.html.twig', [
-            'form' => $form,
             'posts' => $postsService->getPosts(),
         ]);
     }
