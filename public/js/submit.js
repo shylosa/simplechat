@@ -1,7 +1,8 @@
-// $('.btn btn-success').on('click', function (event) {
-//   event.preventDefault();
-//
-//   $.get(this.href, function (data) {
-//     $('.')
-//   });
-// });
+$('.js-btn-submit').on('click', function (event) {
+  let postTable = $('#post-table');
+  event.preventDefault();
+
+  $.get(this.href, function (data) {
+    postTable.html(data);
+  });
+});

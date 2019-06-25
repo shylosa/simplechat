@@ -16,14 +16,13 @@
         </div>
         {# Тут с mt-3 подгон под результат, но лучше пока реализовать не удалось #}
         <div class="align-self-center mt-3">
-            <button type="submit" class="btn btn-success" id="submit_button">Отправить</button>
+            <button type="submit" class="btn btn-success js-btn-submit">Отправить</button>
         </div>
             {{ form_end(form) }}
     </div>
 
-    <span class="post-table">
+    <span id="post-table">
         {{ render(controller('\\App\\Controller\\PostController::postTable')) }}
     </span>
-        {#        {{ include('post/postTable.html.twig', {'posts': posts}) }}#}
 
 {% endblock %}
