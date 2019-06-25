@@ -3,6 +3,26 @@
 
 {% block title %}Simple Chat Test Project{% endblock %}
 
+{% block stylesheets %}
+    <style>
+        .form-inline {
+            width: 50%;
+            margin: 0 auto;
+        }
+
+        .form-inline .input-group {
+            width: 100%;
+        }
+
+        @media screen and (max-width: 900px) {
+            .form-inline {
+                width: 100%;
+                margin: 0 20px;
+            }
+        }
+    </style>
+{% endblock %}
+
 {% block javascripts %}{% endblock %}
 
 {% block body %}
@@ -10,15 +30,14 @@
     <h1 class="text-center mt-5 mb-5">Simple Chat Test Project</h1>
 
     <div class="row justify-content-center">
-        <div class="col-md-4 mt-2">
-            {{ form_start(form, {'attr': {'novalidate': true, 'id': 'chat-form'} }) }}
-            {{ form_widget(form) }}
+        {{ form_start(form, {'attr': {'class': 'form-inline', 'novalidate': true, 'id': 'chat-form'}}) }}
+        <div class="input-group">
+            {{ form_widget(form.message, {'attr': {'class': 'form-control'}}) }}
+            <div class="input-group-append">
+                <button type="submit" class="btn btn-success js-new-talk">Send</button>
+            </div>
         </div>
-        {# Тут с mt-3 подгон под результат, но лучше пока реализовать не удалось #}
-        <div class="align-self-center mt-3">
-            <button type="submit" class="btn btn-success js-btn-submit">Отправить</button>
-        </div>
-            {{ form_end(form) }}
+        {{ form_end(form) }}
     </div>
 
     <span id="post-table">
