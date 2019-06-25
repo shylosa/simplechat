@@ -34,19 +34,17 @@ class PostController extends AbstractController
             return $this->redirectToRoute('post');
         }
 
-        if($postsService->getPostCount() > PostsService::POST_LIMIT){
-            $postsService->removeOldestRow();
-        }
-
         return $this->render('post/index.html.twig', [
             'form' => $form->createView(),
             'posts'=>$postsService->getPosts(),
         ]);
     }
 
-    public function postTable(PostsService $postsService)
+    public function postTable(PostsService $postsService, PostType $form)
     {
+        $postsService->checkPostCount();
         return $this->render('post/postTable.html.twig', [
+            'form' => $form,
             'posts' => $postsService->getPosts(),
         ]);
     }

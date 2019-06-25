@@ -36,4 +36,11 @@ class PostsService
     {
         return $this->postRepository->count([]);
     }
+
+    public function checkPostCount(): void
+    {
+        if($this->getPostCount() > self::POST_LIMIT){
+            $this->removeOldestRow();
+        }
+    }
 }
