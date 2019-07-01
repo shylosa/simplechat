@@ -8,7 +8,9 @@ use App\Repository\PostRepository;
 use App\Service\PostsService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class PostController extends AbstractController
@@ -22,16 +24,28 @@ class PostController extends AbstractController
         $form = $this->createForm(PostType::class, $post);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $post->setPostedAt(new \DateTime());
-            $entityManager->persist($post);
-            $entityManager->flush();
+        if ($form->isSubmitted()) {
+            if ( $form->isValid() ) {
+                $post->setPostedAt(new \DateTime());
+                $entityManager->persist($post);
+                $entityManager->flush();
 
-            if ($request->isXmlHttpRequest()){
-                return $this->postTable($postsService);
+                if ( $request->isXmlHttpRequest() ) {
+                    return $this->postTable($postsService);
+                }
+
+                return $this->redirectToRoute('post');
             }
 
-            return $this->redirectToRoute('post');
+            if ($request->isXmlHttpRequest()) {
+                $errors = [];
+
+                foreach ($form->getErrors(true) as $error) {
+                    $errors[$error->getOrigin()->getName()] = $error->getMessage();
+                };
+
+                return new JsonResponse($errors, Response::HTTP_BAD_REQUEST);
+            }
         }
 
         return $this->render('post/index.html.twig', [
